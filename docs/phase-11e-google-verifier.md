@@ -1,6 +1,6 @@
 # Phase 11e, part 1 — Google ID-token verification component
 
-**Status:** server-only component and synthetic tests; not connected to a route, challenge store, account provisioning or session creation. This is not a working mobile exchange and is not security-reviewed. Mobile login remains disabled.
+**Status:** server-only component and synthetic tests; no route, account provisioning or session creation. A subsequent isolated component combines this verifier with challenge storage; see `phase-11e-attempt-verification.md`. This is not a working mobile exchange and is not security-reviewed. Mobile login remains disabled.
 
 ## What this component does
 
@@ -12,7 +12,7 @@ This is a **restrictive provisional policy**. Validate `aud` and `azp` with real
 
 The server component creates 32 cryptographically random bytes, encodes them as canonical unpadded Base64URL, and computes SHA-256 over the UTF-8 prefix `openfind:mobile-auth:nonce:v1` followed by one zero byte and the UTF-8 encoded nonce. The database stores the resulting lowercase 64-character hex hash, not the raw nonce. Verification requires a canonical nonce and compares hashes with a constant-time primitive.
 
-This is a narrow implementation proposal, **not a finalized wire protocol**. The separate verifier-challenge representation, storage/transport details, generation code for attempts, protocol versioning, independent review and interoperability with Android remain unfinished. Existing attempts queries are still not called by this component.
+This is a narrow implementation proposal, **not a finalized wire protocol**. The separate verifier-challenge representation, storage/transport details, generation code for attempts, protocol versioning, independent review and interoperability with Android remain unfinished. This verifier does not itself call the attempt queries; a subsequent isolated component invokes both as documented in `phase-11e-attempt-verification.md`.
 
 A valid token/nonce match by itself is **replayable**. This verifier does not check attempt expiry, prove verifier possession, atomically consume anything, map an account or create a session. A future exchange must combine all checks in a reviewed order with fail-closed database/session failure semantics. Do not use the returned subject as an authenticated session.
 

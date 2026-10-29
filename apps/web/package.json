@@ -14,7 +14,8 @@
     "auth:test": "tsx scripts/test-auth.mts",
     "auth:spike": "tsx scripts/spike-mobile-session.mts",
     "auth:attempts-test": "tsx scripts/test-mobile-attempts.mts",
-    "auth:google-verifier-test": "node --conditions=react-server --import tsx scripts/test-mobile-google-verifier.mts"
+    "auth:google-verifier-test": "node --conditions=react-server --import tsx scripts/test-mobile-google-verifier.mts",
+    "auth:attempt-verification-test": "node --conditions=react-server --import tsx scripts/test-mobile-attempt-verification.mts"
   },
   "dependencies": {
     "@better-auth/drizzle-adapter": "1.7.14",
