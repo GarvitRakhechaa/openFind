@@ -180,7 +180,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
       <footer className="shell footer">
         <span className="brand footer-brand">
           <span className="brand-mark">O</span>

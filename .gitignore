@@ -37,3 +37,7 @@ pnpm-debug.log*
 # Next.js generated type stub and Vercel project metadata
 /apps/web/next-env.d.ts
 /apps/web/.vercel/
+
+# Next.js generated type stub and Vercel project metadata
+/apps/web/next-env.d.ts
+/apps/web/.vercel/
