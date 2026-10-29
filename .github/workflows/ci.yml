@@ -46,6 +46,7 @@ jobs:
           pnpm --filter @openfind/web db:test
           pnpm --filter @openfind/web auth:test
           pnpm --filter @openfind/web auth:spike
+          pnpm --filter @openfind/web auth:attempts-test
 
       - name: Build web app
         run: pnpm --filter @openfind/web build

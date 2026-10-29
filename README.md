@@ -2,7 +2,7 @@
 
 OpenFind is an Android-first, community-assisted phone-finding project. The intended design allows opted-in Android devices to detect nearby compatible BLE broadcasts and relay approximate location reports, while the owner uses a web dashboard from another device.
 
-## Status: Phase 11c — isolated mobile authentication compatibility spike
+## Status: Phase 11d — inert mobile challenge database foundation
 
 An Expo Android app shell and disabled sign-in status screen are present in `apps/mobile`. The Next.js web app has a landing page, liveness endpoint, provisional Neon/Drizzle schema and a Google sign-in implementation with a protected placeholder dashboard. No Neon project has been connected or migrated, and real Google login has not been tested. Bluetooth discovery, mobile authentication, device ownership, location reporting and the privacy protocol are **not implemented**. Neither the app nor the site can find phones yet; no production security or offline-finding capability is claimed.
 
@@ -10,16 +10,16 @@ An Expo Android app shell and disabled sign-in status screen are present in `app
 
 ```text
 openfind/
-â”œâ”€â”€ apps/
-â”‚   â”œâ”€â”€ mobile/             # Expo / React Native Android app shell
-â”‚   â””â”€â”€ web/                # Next.js landing page and liveness API
-â”œâ”€â”€ packages/
-â”‚   â”œâ”€â”€ api-contracts/      # Reserved for shared validation/contracts
-â”‚   â””â”€â”€ protocol/           # Reserved for reviewed protocol interfaces/tests
-â”œâ”€â”€ docs/                   # Phase 1â€“4 planning documents
-â”œâ”€â”€ scripts/                # Workspace checks
-â”œâ”€â”€ pnpm-workspace.yaml
-â””â”€â”€ tsconfig.base.json
+├── apps/
+│   ├── mobile/             # Expo / React Native Android app shell
+│   └── web/                # Next.js landing page and liveness API
+├── packages/
+│   ├── api-contracts/      # Reserved for shared validation/contracts
+│   └── protocol/           # Reserved for reviewed protocol interfaces/tests
+├── docs/                   # Phase 1–4 planning documents
+├── scripts/                # Workspace checks
+├── pnpm-workspace.yaml
+└── tsconfig.base.json
 ```
 
 The shared package folders remain placeholders. See `apps/mobile/README.md` for Android setup, `apps/web/README.md` for web and Vercel instructions, and `apps/web/src/db/README.md` for database setup and migration safety.
@@ -62,6 +62,7 @@ GitHub Actions runs these checks and builds the web app, audits dependencies at 
 - [Phase 11a: mobile authentication safety decision](docs/phase-11-mobile-auth-decision.md)
 - [Phase 11b: proposed mobile Google login design](docs/phase-11b-mobile-auth-design.md)
 - [Phase 11c: compatibility spike and remaining blockers](docs/phase-11c-compatibility-spike.md)
+- [Phase 11d: inert challenge database foundation](docs/phase-11d-challenge-foundation.md)
 
 The privacy design remains a proposal: encryption, metadata exposure, account/key recovery and anti-abuse measures require further specification and independent review before public release. BLE reliability depends on real devices, permissions and operating-system restrictions.
 

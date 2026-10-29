@@ -15,6 +15,13 @@
       "when": 1793281045351,
       "tag": "0001_glamorous_stepford_cuckoos",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793297559021,
+      "tag": "0002_deep_dark_beast",
+      "breakpoints": true
     }
   ]
 }

@@ -1,6 +1,36 @@
 import { sql } from 'drizzle-orm';
 import { check, index, pgTable, text, timestamp, uniqueIndex, uuid } from 'drizzle-orm/pg-core';
 
+/** Inert challenge storage; no login endpoint uses this table yet. */
+export const mobileAuthAttempts = pgTable(
+  'mobile_auth_attempts',
+  {
+    id: text('id').primaryKey(),
+    nonceHash: text('nonce_hash').notNull(),
+    verifierHash: text('verifier_hash').notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+    expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
+    consumedAt: timestamp('consumed_at', { withTimezone: true }),
+  },
+  (table) => [
+    index('mobile_auth_attempts_expiry_idx').on(table.expiresAt),
+    check('mobile_auth_attempts_id_format', sql`${table.id} ~ '^[A-Za-z0-9_-]{43}$'`),
+    check('mobile_auth_attempts_nonce_hash_format', sql`${table.nonceHash} ~ '^[0-9a-f]{64}$'`),
+    check(
+      'mobile_auth_attempts_verifier_hash_format',
+      sql`${table.verifierHash} ~ '^[0-9a-f]{64}$'`,
+    ),
+    check(
+      'mobile_auth_attempts_expiry_window',
+      sql`${table.expiresAt} > ${table.createdAt} AND ${table.expiresAt} <= ${table.createdAt} + interval '5 minutes'`,
+    ),
+    check(
+      'mobile_auth_attempts_consumed_window',
+      sql`${table.consumedAt} IS NULL OR (${table.consumedAt} >= ${table.createdAt} AND ${table.consumedAt} < ${table.expiresAt})`,
+    ),
+  ],
+);
+
 /** External identity references only. Authentication is not implemented in this phase. */
 export const accounts = pgTable(
   'accounts',

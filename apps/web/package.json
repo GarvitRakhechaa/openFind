@@ -12,7 +12,8 @@
     "db:migrate": "drizzle-kit migrate",
     "db:test": "node scripts/test-migration.mjs",
     "auth:test": "tsx scripts/test-auth.mts",
-    "auth:spike": "tsx scripts/spike-mobile-session.mts"
+    "auth:spike": "tsx scripts/spike-mobile-session.mts",
+    "auth:attempts-test": "tsx scripts/test-mobile-attempts.mts"
   },
   "dependencies": {
     "@better-auth/drizzle-adapter": "1.7.14",
