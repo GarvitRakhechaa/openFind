@@ -1,0 +1,10 @@
+﻿node_modules/
+.pnpm-store/
+.next/
+.expo/
+coverage/
+dist/
+build/
+pnpm-lock.yaml
+LICENSE
+docs/

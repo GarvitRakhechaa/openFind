@@ -1,0 +1,14 @@
+{
+  "expo": {
+    "name": "OpenFind",
+    "slug": "openfind",
+    "version": "0.1.0",
+    "scheme": "openfind",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "android": {
+      "package": "org.openfind.mobile"
+    },
+    "plugins": ["expo-router"]
+  }
+}

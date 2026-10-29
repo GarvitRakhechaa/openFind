@@ -4,12 +4,25 @@
   "private": true,
   "packageManager": "pnpm@10.12.4",
   "engines": {
-    "node": ">=20.19.0"
+    "node": "^24.3.0 || ^26.0.0 || >=27.0.0"
   },
   "scripts": {
-    "check:config": "node scripts/check-config.mjs"
+    "check:config": "node scripts/check-config.mjs",
+    "lint": "eslint . --max-warnings 0",
+    "format:check": "prettier --check .",
+    "format": "prettier --write .",
+    "typecheck": "tsc --noEmit -p tsconfig.json && node apps/mobile/node_modules/typescript/bin/tsc --noEmit -p apps/mobile/tsconfig.json",
+    "check": "node scripts/check-config.mjs && eslint . --max-warnings 0 && prettier --check . && tsc --noEmit -p tsconfig.json && node apps/mobile/node_modules/typescript/bin/tsc --noEmit -p apps/mobile/tsconfig.json",
+    "typecheck:workspace": "tsc --noEmit -p tsconfig.json",
+    "typecheck:mobile": "node apps/mobile/node_modules/typescript/bin/tsc --noEmit -p apps/mobile/tsconfig.json"
   },
   "devDependencies": {
-    "typescript": "5.8.3"
+    "@eslint/js": "10.0.1",
+    "@types/node": "20.19.43",
+    "eslint": "10.13.0",
+    "globals": "16.5.0",
+    "prettier": "3.9.10",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.72.1"
   }
 }

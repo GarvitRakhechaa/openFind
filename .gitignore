@@ -24,3 +24,12 @@ pnpm-debug.log*
 .idea/
 .vscode/
 '@ | Set-Content -Encoding utf8 .gitignore
+# Expo continuous native generation output (recreated by prebuild)
+/apps/mobile/android/
+/apps/mobile/ios/
+/apps/mobile/expo-env.d.ts
+
+# Expo continuous native generation output (recreated by prebuild)
+/apps/mobile/android/
+/apps/mobile/ios/
+/apps/mobile/expo-env.d.ts
