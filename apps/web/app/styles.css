@@ -647,3 +647,132 @@ a:focus-visible {
     gap: 10px;
   }
 }
+
+/* Auth pages (Phase 10) */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.nav-signin {
+  color: #245a48;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.nav-signin:hover {
+  color: #398162;
+}
+.auth-page {
+  min-height: 100vh;
+  padding: 48px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #f7f8f2;
+}
+.auth-card {
+  width: min(100%, 460px);
+  margin-top: 75px;
+  padding: 38px;
+  border: 1px solid #dfe9dd;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 15px 50px #173c3109;
+}
+.auth-card h1 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 40px;
+  font-weight: 400;
+  letter-spacing: -1.5px;
+  margin: 19px 0 12px;
+}
+.auth-card h1 span {
+  color: #6fa586;
+}
+.auth-intro {
+  color: #677c6f;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.auth-button {
+  width: 100%;
+  margin-top: 20px;
+  padding: 16px;
+  border: 0;
+  border-radius: 8px;
+  background: #245a48;
+  color: #fff;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.auth-button:hover:not(:disabled) {
+  background: #173f33;
+}
+.auth-button:disabled {
+  background: #a6b7aa;
+  cursor: not-allowed;
+}
+.auth-notice,
+.dashboard-notice {
+  margin-top: 18px;
+  border-radius: 8px;
+  background: #f0f4ec;
+  padding: 14px;
+  color: #54705e;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.auth-error {
+  color: #a13e31;
+  font-size: 13px;
+}
+.auth-footnote {
+  color: #95a299;
+  margin: 22px 0 0;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.auth-back {
+  color: #648675;
+  font-size: 13px;
+  font-weight: 700;
+  margin-top: 26px;
+}
+.dashboard-page {
+  align-items: stretch;
+  max-width: 1180px;
+  margin: auto;
+}
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.dashboard-page .auth-card {
+  margin-left: auto;
+  margin-right: auto;
+}
+.auth-logout {
+  background: transparent;
+  border: 1px solid #dbe6dc;
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #245a48;
+  font-weight: 700;
+  cursor: pointer;
+}
+.dashboard-notice p {
+  margin: 7px 0 0;
+}
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 26px;
+    margin-top: 55px;
+  }
+  .auth-card h1 {
+    font-size: 35px;
+  }
+}

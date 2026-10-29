@@ -6,8 +6,9 @@ Phase 9 introduces a provisional PostgreSQL schema and a server-only Neon HTTP c
 
 - `accounts`: opaque ID, external auth provider and subject reference, timestamps. Provider/subject is unique. Authentication provider and account recovery are not configured.
 - `devices`: opaque ID, owner FK, display name, preliminary enrollment/lost statuses and timestamps. Deleting an account with devices is restricted pending a reviewed deletion flow.
+- `user`, `account`, `session`, `verification`, `rate_limit`: Better Auth's Google login, server-side session and rate-limit schema. These are separate from the provisional OpenFind `accounts` table; no device-to-auth-user mapping is implemented yet.
 
-Neither table stores coordinates, BLE identifiers, private keys, passwords or tokens. `updated_at` has an insert default; updates must explicitly set it until a reviewed automatic mechanism is added. Table membership or a foreign key does **not** authorize a request: future API endpoints must enforce server-side ownership.
+The provisional OpenFind `accounts` and `devices` tables do not store coordinates, BLE identifiers, private keys, passwords or tokens. Better Auth's `session` and `account` tables store session and OAuth-related tokens; OAuth tokens are configured for encryption at rest. Access, deletion and retention of authentication records require review. `updated_at` has an insert default; updates must explicitly set it until a reviewed automatic mechanism is added. Table membership or a foreign key does **not** authorize a request: future API endpoints must enforce server-side ownership.
 
 ## Configuration
 

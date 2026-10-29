@@ -2,24 +2,24 @@
 
 OpenFind is an Android-first, community-assisted phone-finding project. The intended design allows opted-in Android devices to detect nearby compatible BLE broadcasts and relay approximate location reports, while the owner uses a web dashboard from another device.
 
-## Status: Phase 9 — database foundation
+## Status: Phase 10 — Google authentication foundation
 
-An Expo Android app shell is present in `apps/mobile`. The Next.js web app has a landing page, liveness endpoint, provisional Neon/Drizzle schema and migration in `apps/web`. No Neon project has been connected or migrated yet. Bluetooth discovery, authentication, location reporting and the privacy protocol are **not implemented**. Neither the app nor the site can find phones yet; no production security or offline-finding capability is claimed.
+An Expo Android app shell is present in `apps/mobile`. The Next.js web app has a landing page, liveness endpoint, provisional Neon/Drizzle schema and a Google sign-in implementation with a protected placeholder dashboard. No Neon project has been connected or migrated, and real Google login has not been tested. Bluetooth discovery, mobile authentication, device ownership, location reporting and the privacy protocol are **not implemented**. Neither the app nor the site can find phones yet; no production security or offline-finding capability is claimed.
 
 ## Planned structure
 
 ```text
 openfind/
-├── apps/
-│   ├── mobile/             # Expo / React Native Android app shell
-│   └── web/                # Next.js landing page and liveness API
-├── packages/
-│   ├── api-contracts/      # Reserved for shared validation/contracts
-│   └── protocol/           # Reserved for reviewed protocol interfaces/tests
-├── docs/                   # Phase 1–4 planning documents
-├── scripts/                # Workspace checks
-├── pnpm-workspace.yaml
-└── tsconfig.base.json
+â”œâ”€â”€ apps/
+â”‚   â”œâ”€â”€ mobile/             # Expo / React Native Android app shell
+â”‚   â””â”€â”€ web/                # Next.js landing page and liveness API
+â”œâ”€â”€ packages/
+â”‚   â”œâ”€â”€ api-contracts/      # Reserved for shared validation/contracts
+â”‚   â””â”€â”€ protocol/           # Reserved for reviewed protocol interfaces/tests
+â”œâ”€â”€ docs/                   # Phase 1â€“4 planning documents
+â”œâ”€â”€ scripts/                # Workspace checks
+â”œâ”€â”€ pnpm-workspace.yaml
+â””â”€â”€ tsconfig.base.json
 ```
 
 The shared package folders remain placeholders. See `apps/mobile/README.md` for Android setup, `apps/web/README.md` for web and Vercel instructions, and `apps/web/src/db/README.md` for database setup and migration safety.
@@ -51,7 +51,7 @@ GitHub Actions runs these checks and builds the web app, audits dependencies at 
 
 ## Configuration and secrets
 
-`apps/web/.env.example` documents the server-only `DATABASE_URL`; no Neon database is connected yet. Create real environment files locally as providers are selected. Never commit credentials, private keys, recovery materials or real location data. Server secrets must never be included in browser or mobile bundles.
+`apps/web/.env.example` documents server-only database and Google authentication variables; no Neon database or Google OAuth credentials are connected yet. Create real environment files locally as providers are selected. Never commit credentials, private keys, recovery materials or real location data. Server secrets must never be included in browser or mobile bundles.
 
 ## Planning documents
 

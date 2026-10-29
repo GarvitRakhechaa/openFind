@@ -10,11 +10,14 @@
     "db:generate": "drizzle-kit generate",
     "db:check": "drizzle-kit check",
     "db:migrate": "drizzle-kit migrate",
-    "db:test": "node scripts/test-migration.mjs"
+    "db:test": "node scripts/test-migration.mjs",
+    "auth:test": "tsx scripts/test-auth.mts"
   },
   "dependencies": {
+    "@better-auth/drizzle-adapter": "1.7.14",
     "@neondatabase/serverless": "1.2.0",
     "@next/env": "16.4.3",
+    "better-auth": "1.7.14",
     "drizzle-orm": "0.45.4",
     "next": "16.4.3",
     "react": "19.3.1",
@@ -26,7 +29,10 @@
     "@types/node": "20.19.43",
     "@types/react": "~19.3.0",
     "@types/react-dom": "~19.3.0",
+    "better-call": "1.4.4",
     "drizzle-kit": "0.31.11",
+    "tsx": "4.23.15",
     "typescript": "~6.0.3"
-  }
+  },
+  "type": "module"
 }
