@@ -90,6 +90,9 @@ importers:
       drizzle-orm:
         specifier: 0.45.4
         version: 0.45.4(@electric-sql/pglite@0.5.13)(@neondatabase/serverless@1.2.0)(kysely@0.29.7)
+      jose:
+        specifier: 6.2.14
+        version: 6.2.14
       next:
         specifier: 16.4.3
         version: 16.4.3(@types/node@20.19.43)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
