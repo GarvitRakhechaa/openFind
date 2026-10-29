@@ -40,6 +40,11 @@ jobs:
       - name: Check configuration, lint, format and types
         run: pnpm check
 
+      - name: Validate migrations and database constraints
+        run: |
+          pnpm --filter @openfind/web db:check
+          pnpm --filter @openfind/web db:test
+
       - name: Build web app
         run: pnpm --filter @openfind/web build
 

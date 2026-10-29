@@ -2,9 +2,9 @@
 
 OpenFind is an Android-first, community-assisted phone-finding project. The intended design allows opted-in Android devices to detect nearby compatible BLE broadcasts and relay approximate location reports, while the owner uses a web dashboard from another device.
 
-## Status: Phase 7 — Android app foundation
+## Status: Phase 9 — database foundation
 
-An Expo/React Native Android app shell with home and about screens is present in `apps/mobile`. Bluetooth discovery, accounts, backend, location reporting and the privacy protocol are **not implemented**. The app cannot find phones yet; no production security or offline-finding capability is claimed.
+An Expo Android app shell is present in `apps/mobile`. The Next.js web app has a landing page, liveness endpoint, provisional Neon/Drizzle schema and migration in `apps/web`. No Neon project has been connected or migrated yet. Bluetooth discovery, authentication, location reporting and the privacy protocol are **not implemented**. Neither the app nor the site can find phones yet; no production security or offline-finding capability is claimed.
 
 ## Planned structure
 
@@ -12,7 +12,7 @@ An Expo/React Native Android app shell with home and about screens is present in
 openfind/
 ├── apps/
 │   ├── mobile/             # Expo / React Native Android app shell
-│   └── web/                # Reserved for Next.js dashboard and API
+│   └── web/                # Next.js landing page and liveness API
 ├── packages/
 │   ├── api-contracts/      # Reserved for shared validation/contracts
 │   └── protocol/           # Reserved for reviewed protocol interfaces/tests
@@ -22,7 +22,7 @@ openfind/
 └── tsconfig.base.json
 ```
 
-The web and shared package folders remain placeholders until their respective phases. See `apps/mobile/README.md` for development-build setup and Android testing instructions.
+The shared package folders remain placeholders. See `apps/mobile/README.md` for Android setup, `apps/web/README.md` for web and Vercel instructions, and `apps/web/src/db/README.md` for database setup and migration safety.
 
 ## Prerequisites
 
@@ -45,13 +45,13 @@ Alternatively, with pnpm 10.12.4 already installed, use `pnpm install --frozen-l
 
 Individual commands: `corepack pnpm lint`, `corepack pnpm format:check`, `corepack pnpm typecheck`, and `corepack pnpm check:config`. Run `corepack pnpm format` to apply formatting. Archived planning documents under `docs/` are excluded from automatic formatting.
 
-GitHub Actions runs these checks, audits dependencies at the high severity threshold, and uses Gitleaks to scan the checked-out file tree before dependencies are installed. This is not a full Git-history scan, nor does it guarantee that all secrets or vulnerabilities are detected. Dependabot is configured for weekly dependency and GitHub Actions updates. CI runs only after the repository is pushed to GitHub.
+GitHub Actions runs these checks and builds the web app, audits dependencies at the high severity threshold, and uses Gitleaks to scan the checked-out file tree before dependencies are installed. This is not a full Git-history scan, nor does it guarantee that all secrets or vulnerabilities are detected. Dependabot is configured for weekly dependency and GitHub Actions updates. CI runs only after the repository is pushed to GitHub.
 
-**Known audit blocker:** The Phase 7 dependency audit reports a high-severity advisory ([GHSA-mrhx-c7xc-m3w5](https://github.com/advisories/GHSA-mrhx-c7xc-m3w5)) in `expo > @expo/cli > zod@3.25.76` and a low-severity advisory in `expo > @expo/config > deepmerge@4.3.1`. The upstream Expo CLI currently requests Zod 3 while the advisory identifies Zod 4.6.6 or later as patched. The CI audit is expected to fail at its high threshold. We have not forced a potentially incompatible major-version override or suppressed the advisory; reassess upstream fixes and exposure before release.
+**Known audit blocker:** The dependency audit reports a high-severity advisory ([GHSA-mrhx-c7xc-m3w5](https://github.com/advisories/GHSA-mrhx-c7xc-m3w5)) in `expo > @expo/cli > zod@3.25.76`, a low-severity advisory in Expo's `deepmerge` dependency, and a moderate advisory ([GHSA-67mh-4wv8-2f99](https://github.com/advisories/GHSA-67mh-4wv8-2f99)) in an esbuild dependency of Drizzle Kit's loader. The upstream Expo CLI currently requests Zod 3 while the advisory identifies Zod 4.6.6 or later as patched. The CI audit is expected to fail at its high threshold. We have not forced potentially incompatible overrides or suppressed advisories; assess exposure and upstream fixes before release.
 
 ## Configuration and secrets
 
-`.env.example` is a placeholder; no services or environment variables are configured yet. Create real environment files locally as providers are selected. Never commit credentials, private keys, recovery materials or real location data. Server secrets must never be included in browser or mobile bundles.
+`apps/web/.env.example` documents the server-only `DATABASE_URL`; no Neon database is connected yet. Create real environment files locally as providers are selected. Never commit credentials, private keys, recovery materials or real location data. Server secrets must never be included in browser or mobile bundles.
 
 ## Planning documents
 

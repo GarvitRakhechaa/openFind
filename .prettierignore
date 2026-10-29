@@ -8,3 +8,6 @@ build/
 pnpm-lock.yaml
 LICENSE
 docs/
+
+# Drizzle-generated SQL and snapshot files
+apps/web/drizzle/
