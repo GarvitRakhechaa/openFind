@@ -33,3 +33,7 @@ pnpm-debug.log*
 /apps/mobile/android/
 /apps/mobile/ios/
 /apps/mobile/expo-env.d.ts
+
+# Next.js generated type stub and Vercel project metadata
+/apps/web/next-env.d.ts
+/apps/web/.vercel/

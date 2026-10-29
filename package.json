@@ -11,10 +11,11 @@
     "lint": "eslint . --max-warnings 0",
     "format:check": "prettier --check .",
     "format": "prettier --write .",
-    "typecheck": "tsc --noEmit -p tsconfig.json && node apps/mobile/node_modules/typescript/bin/tsc --noEmit -p apps/mobile/tsconfig.json",
-    "check": "node scripts/check-config.mjs && eslint . --max-warnings 0 && prettier --check . && tsc --noEmit -p tsconfig.json && node apps/mobile/node_modules/typescript/bin/tsc --noEmit -p apps/mobile/tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json && node apps/mobile/node_modules/typescript/bin/tsc --noEmit -p apps/mobile/tsconfig.json && node apps/web/node_modules/typescript/bin/tsc --noEmit -p apps/web/tsconfig.json",
+    "check": "node scripts/check-config.mjs && eslint . --max-warnings 0 && prettier --check . && tsc --noEmit -p tsconfig.json && node apps/mobile/node_modules/typescript/bin/tsc --noEmit -p apps/mobile/tsconfig.json && node apps/web/node_modules/typescript/bin/tsc --noEmit -p apps/web/tsconfig.json",
     "typecheck:workspace": "tsc --noEmit -p tsconfig.json",
-    "typecheck:mobile": "node apps/mobile/node_modules/typescript/bin/tsc --noEmit -p apps/mobile/tsconfig.json"
+    "typecheck:mobile": "node apps/mobile/node_modules/typescript/bin/tsc --noEmit -p apps/mobile/tsconfig.json",
+    "typecheck:web": "node apps/web/node_modules/typescript/bin/tsc --noEmit -p apps/web/tsconfig.json"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

@@ -1,5 +1,4 @@
-name: CI
-
+﻿name: CI
 on:
   push:
   pull_request:
@@ -17,16 +16,13 @@ jobs:
     name: Workspace checks
     runs-on: ubuntu-latest
     timeout-minutes: 15
-
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      # Scans the current checkout, not all Git history.
       - name: Scan current files for secrets
         run: >-
-          docker run --rm -v "$PWD:/repo:ro"
-          ghcr.io/gitleaks/gitleaks:v8.30.1
+          docker run --rm -v "$PWD:/repo:ro" ghcr.io/gitleaks/gitleaks:v8.30.1
           dir /repo --redact --no-banner
 
       - name: Install pnpm
@@ -43,6 +39,9 @@ jobs:
 
       - name: Check configuration, lint, format and types
         run: pnpm check
+
+      - name: Build web app
+        run: pnpm --filter @openfind/web build
 
       - name: Audit dependencies
         run: pnpm audit --audit-level high
