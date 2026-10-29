@@ -9,6 +9,7 @@ export default function RootLayout() {
         screenOptions={{ headerStyle: { backgroundColor: '#f5f8fc' }, headerTintColor: '#142c42' }}
       >
         <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="sign-in" options={{ title: 'Owner account' }} />
         <Stack.Screen name="about" options={{ title: 'About OpenFind' }} />
       </Stack>
     </>

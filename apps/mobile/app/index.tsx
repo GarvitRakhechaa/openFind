@@ -28,11 +28,14 @@ export default function HomeScreen() {
           <Text style={styles.cardTitle}>Finding is not active yet</Text>
           <Text style={styles.cardText}>
             Bluetooth discovery, accounts, location reporting, and the owner dashboard are not
-            implemented in this build. Please don’t rely on it to find a lost phone.
+            implemented in this build. Please donâ€™t rely on it to find a lost phone.
           </Text>
         </View>
+        <Link href="/sign-in" style={styles.link}>
+          View sign-in status →
+        </Link>
         <Link href="/about" style={styles.link}>
-          Learn about the project →
+          Learn about the project â†’
         </Link>
         <Text style={styles.footer}>Built with privacy and community in mind.</Text>
       </ScrollView>

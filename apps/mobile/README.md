@@ -1,6 +1,6 @@
 # OpenFind Android app
 
-Phase 7 provides a React Native app shell using Expo SDK 58, Expo Router and a development-client build profile. The Home and About screens do not implement finding, Bluetooth, location, authentication or reporting.
+The React Native app shell uses Expo SDK 58, Expo Router and a development-client build profile. Phase 11a adds an account screen, but mobile Google sign-in is intentionally disabled until the session-handoff design is reviewed. Finding, Bluetooth, location, authentication and reporting are not implemented. See `../../docs/phase-11-mobile-auth-decision.md`.
 
 ## Requirements
 
