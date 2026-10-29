@@ -2,7 +2,7 @@
 
 OpenFind is an Android-first, community-assisted phone-finding project. The intended design allows opted-in Android devices to detect nearby compatible BLE broadcasts and relay approximate location reports, while the owner uses a web dashboard from another device.
 
-## Status: Phase 11a — mobile authentication safety gate
+## Status: Phase 11b — mobile authentication design and web safety gate
 
 An Expo Android app shell and disabled sign-in status screen are present in `apps/mobile`. The Next.js web app has a landing page, liveness endpoint, provisional Neon/Drizzle schema and a Google sign-in implementation with a protected placeholder dashboard. No Neon project has been connected or migrated, and real Google login has not been tested. Bluetooth discovery, mobile authentication, device ownership, location reporting and the privacy protocol are **not implemented**. Neither the app nor the site can find phones yet; no production security or offline-finding capability is claimed.
 
@@ -59,7 +59,8 @@ GitHub Actions runs these checks and builds the web app, audits dependencies at 
 - [Phase 2: threat model](docs/phase-02-threat-model.md)
 - [Phase 3: privacy protocol proposal](docs/phase-03-privacy-protocol.md)
 - [Phase 4: architecture and data model](docs/phase-04-architecture-data-model.md)
-- [Phase 11: mobile authentication safety decision](docs/phase-11-mobile-auth-decision.md)
+- [Phase 11a: mobile authentication safety decision](docs/phase-11-mobile-auth-decision.md)
+- [Phase 11b: proposed mobile Google login design](docs/phase-11b-mobile-auth-design.md)
 
 The privacy design remains a proposal: encryption, metadata exposure, account/key recovery and anti-abuse measures require further specification and independent review before public release. BLE reliability depends on real devices, permissions and operating-system restrictions.
 

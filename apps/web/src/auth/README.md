@@ -20,7 +20,7 @@ The API and sign-in button fail closed if settings are missing or the URL/secret
 
 ## Security boundary and limitations
 
-- Google OAuth is the only configured sign-in method. Password and email signup are disabled.
+- Google OAuth is the only configured sign-in method. Password and email signup are disabled. Direct Google ID-token sign-in is also explicitly disabled while the mobile exchange remains unimplemented; the web authorization-code flow is unaffected.
 - Better Auth handles OAuth state and PKCE. Server-side database sessions expire after seven days; session cookie caching is disabled so revocation is checked against storage. Sign-out deletes the session through Better Auth.
 - OAuth tokens are configured for encryption at rest; session tokens and metadata in the database remain sensitive. No plaintext report locations, tokens or secrets should be logged.
 - Authentication POSTs require an exact configured browser origin and reject cross-site Fetch Metadata. This is a **web-only** policy: native Expo authentication is not implemented and needs its own reviewed origin/deep-link handling in Phase 11.
