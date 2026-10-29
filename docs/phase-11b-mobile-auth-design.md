@@ -1,4 +1,4 @@
-# OpenFind — Phase 11b: Mobile Google Login Design
+# OpenFind â€” Phase 11b: Mobile Google Login Design
 
 **Status:** Proposed technical direction; not implemented, independently reviewed, or ready for production.  
 **Related:** `phase-11-mobile-auth-decision.md`; `apps/web/src/auth/README.md`
@@ -13,26 +13,26 @@ This is an architectural choice to guide the next small build phases, not a secu
 
 The existing Better Auth Google provider now explicitly disables direct client-submitted ID-token sign-in. The separate web authorization-code flow remains enabled. The web-only authentication POST origin checks are unchanged.
 
-This is a **temporary fail-closed gate**: a future mobile endpoint cannot simply call the publicly exposed, unconstrained Better Auth social-ID-token route and skip challenge verification. Before mobile is enabled, design and test a supported server-side integration that issues the same kind of revocable session only after validation, without adding a second publicly exposed bypass. If a suitable supported integration is not available, revisit the provider/architecture rather than minting sessions using undocumented internals.
+This is a **temporary fail-closed gate**: a future mobile endpoint cannot simply call the publicly exposed, unconstrained Better Auth social-ID-token route and skip challenge verification. The separately installable One Tap plugin must not be enabled as a bypass. Before mobile is enabled, design and test a supported server-side integration that issues the same kind of revocable session only after validation. Better Auth documents a plugin context with `internalAdapter.createSession`, and Phase 11c tests it in an isolated fixture; that does not establish a safe production integration. See `phase-11c-compatibility-spike.md`. Before mobile is enabled, design and test a supported server-side integration that issues the same kind of revocable session only after validation, without adding a second publicly exposed bypass. If a suitable supported integration is not available, revisit the provider/architecture rather than minting sessions using undocumented internals.
 
 ## 3. Candidate flow and trust boundaries
 
 ```text
 Android app                 OpenFind API                    Google
-     │                          │                              │
-     │ 1. start login           │                              │
-     │  generate verifier locally; send challenge hash        │
-     ├─────────────────────────►│ create short-lived attempt  │
-     │◄─────────────────────────┤ attempt ID + nonce          │
-     │                          │                              │
-     │ 2. Credential Manager request with server nonce       │
-     ├────────────────────────────────────────────────────────►│
-     │◄────────────────────────────────────────────────────────┤ Google ID token
-     │                          │                              │
-     │ 3. exchange token + attempt ID + local verifier         │
-     ├─────────────────────────►│ verify + atomically consume │
-     │◄─────────────────────────┤ session over HTTPS, if valid│
-     │ 4. store session with Android secure storage           │
+     â”‚                          â”‚                              â”‚
+     â”‚ 1. start login           â”‚                              â”‚
+     â”‚  generate verifier locally; send challenge hash        â”‚
+     â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â–ºâ”‚ create short-lived attempt  â”‚
+     â”‚â—„â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤ attempt ID + nonce          â”‚
+     â”‚                          â”‚                              â”‚
+     â”‚ 2. Credential Manager request with server nonce       â”‚
+     â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â–ºâ”‚
+     â”‚â—„â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤ Google ID token
+     â”‚                          â”‚                              â”‚
+     â”‚ 3. exchange token + attempt ID + local verifier         â”‚
+     â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â–ºâ”‚ verify + atomically consume â”‚
+     â”‚â—„â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤ session over HTTPS, if validâ”‚
+     â”‚ 4. store session with Android secure storage           â”‚
 ```
 
 This diagram specifies intended trust boundaries, not functioning endpoints. A Google token and a session are sensitive bearer material and must never appear in a URL, log, analytics event or crash report. Always use HTTPS for device-to-backend requests; do not embed a server secret in the app.
@@ -77,11 +77,11 @@ The attempt store should minimally contain opaque attempt ID, hashed nonce, veri
 
 ## 6. Implementation slices
 
-1. **11b — safety gate and design:** disable direct ID-token path on the existing public web provider; preserve web OAuth and origin checks; test both. This document records the candidate mobile flow.
-2. **11c — technical spike:** verify Credential Manager and a maintained Google verifier on real Android/staging infrastructure; investigate a supported Better Auth session-issuance API. No real user locations or production accounts.
-3. **11d — challenge/exchange design and review:** finalize request contract, rate limits, atomic consumption, Google verification, account mapping, session transport and error model. Obtain security review before enabling a real endpoint.
-4. **11e — Android integration:** implement native credential prompt, HTTPS client and secure session storage with cancel/offline/revocation handling; keep disabled until server integration is ready.
-5. **11f — end-to-end verification:** test real staging Google + Neon login/logout, multi-account mapping, replay, expired attempts, malicious intents, app restart and cross-device recovery. Keep public release behind independent review.
+1. **11b â€” safety gate and design:** disable direct ID-token path on the existing public web provider; preserve web OAuth and origin checks; test both. This document records the candidate mobile flow.
+2. **11c â€” technical spike:** verify Credential Manager and a maintained Google verifier on real Android/staging infrastructure; investigate a supported Better Auth session-issuance API. No real user locations or production accounts.
+3. **11d â€” challenge/exchange design and review:** finalize request contract, rate limits, atomic consumption, Google verification, account mapping, session transport and error model. Obtain security review before enabling a real endpoint.
+4. **11e â€” Android integration:** implement native credential prompt, HTTPS client and secure session storage with cancel/offline/revocation handling; keep disabled until server integration is ready.
+5. **11f â€” end-to-end verification:** test real staging Google + Neon login/logout, multi-account mapping, replay, expired attempts, malicious intents, app restart and cross-device recovery. Keep public release behind independent review.
 
 ## 7. Test and release gates
 

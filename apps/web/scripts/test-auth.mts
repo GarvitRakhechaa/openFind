@@ -85,6 +85,17 @@ try {
   assert.equal(idTokenResponse.status, 404, 'direct ID-token sign-in must remain disabled');
   const idTokenError = (await idTokenResponse.json()) as { code?: string };
   assert.equal(idTokenError.code, 'ID_TOKEN_NOT_SUPPORTED');
+
+  // One Tap plugin exposes a separate /one-tap/callback route that bypasses
+  // disableIdTokenSignIn. Assert it is not installed in production auth.
+  const oneTapResponse = await auth.handler(
+    new Request(`${baseURL}/api/auth/one-tap/callback`, {
+      method: 'POST',
+      headers: { origin: baseURL, 'content-type': 'application/json' },
+      body: JSON.stringify({ idToken: 'synthetic-google-id-token' }),
+    }),
+  );
+  assert.equal(oneTapResponse.status, 404, 'One Tap plugin must not be installed');
   console.log('Synthetic ID-token rejection:', idTokenError.code);
 
   const rejected = await auth.handler(
