@@ -7,10 +7,10 @@
 `apps/web/src/auth/mobile-attempt-verification.ts` connects the existing inert challenge SQL builders to the previously built Google token verifier:
 
 1. `createMobileAttempt` receives a client verifier commitment, creates a 32-byte random attempt ID and server nonce, and stores the nonce hash and verifier commitment. It returns the ID and nonce to its trusted caller. No HTTP handler calls it.
-2. `verifyAndConsumeMobileAttempt` validates input formats, reads an unused and unexpired attempt, checks the verifier commitment, verifies a signed Google token against the stored nonce hash and trusted server client IDs, then conditionally consumes the same attempt. It returns the verified Google issuer and subject only when the consume statement returns a row.
+2. `verifyAndConsumeMobileAttempt` validates input formats, reads an unused and unexpired attempt, checks the verifier commitment, verifies a signed Google token against the stored nonce hash and trusted server client IDs, then conditionally consumes the same attempt. It returns the verified Google issuer, subject and verified profile only when the consume statement returns a row.
 3. Database errors propagate instead of being treated as success. If an update committed but the response was lost, a retry cannot be assumed safe. A future caller must fail closed and require a fresh attempt, subject to an independently reviewed session issuance design.
 
-The returned identity is **not a session or authorization decision**. Nothing in the repository uses this component to create one. The single SQL update is the replay gate for this candidate operation; it does not make subsequent account/session writes part of the same transaction.
+The returned identity is **not a session or authorization decision**. A separate unregistered candidate uses it for isolated account/session tests; see `phase-11e-account-issuance.md`. No application route calls either component. The single SQL update is the replay gate for this candidate operation; it does not make subsequent account/session writes part of the same transaction.
 
 ## Provisional verifier commitment
 

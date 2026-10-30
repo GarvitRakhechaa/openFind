@@ -25,7 +25,7 @@ The API and sign-in button fail closed if settings are missing or the URL/secret
 - OAuth tokens are configured for encryption at rest; session tokens and metadata in the database remain sensitive. No plaintext report locations, tokens or secrets should be logged.
 - Authentication POSTs require an exact configured browser origin and reject cross-site Fetch Metadata. This is a **web-only** policy: native Expo authentication is not implemented and needs its own reviewed origin/deep-link handling in Phase 11.
 - Authentication rate-limit state is stored in the database rather than a single serverless process. The trusted-proxy/client-IP setup and concurrency behavior must be validated for the actual Vercel deployment; it is not a substitute for a broader abuse review.
-- OAuth account linking is disabled. Better Auth's `user` ID is **not yet linked** to OpenFind's provisional `accounts` table. Phase 12 must implement and test secure ownership mapping before exposing devices.
+- OAuth account linking is disabled. Phase 12 has a one-to-one mapping table, session-based owner lookup, and an unregistered provisioning candidate. It has no public route, legacy reconciliation, or device authorization. Existing accounts are not automatically linked; do not expose devices yet.
 - Real-world database connectivity, Google callback, CSRF/rate-limit behavior on deployed infrastructure, provider recovery, security review and encrypted-location key recovery remain pending. Google account recovery is not cryptographic report-key recovery.
 
 ## Local isolated test

@@ -34,6 +34,8 @@ try {
     iat: now,
     exp: now + 300,
     nonce,
+    email: 'Fixture@example.invalid',
+    email_verified: true,
   };
   async function signed(changes: Record<string, unknown> = {}, key = privateKey): Promise<string> {
     const claims = { ...defaults, ...changes };
@@ -52,6 +54,8 @@ try {
   assert.deepEqual(await verifyMobileGoogleToken(valid, nonceHash, policy), {
     issuer: 'https://accounts.google.com',
     subject: 'google-subject-fixture',
+    email: 'fixture@example.invalid',
+    name: 'Google user',
   });
   assert.ok(fetches >= 2, 'a failed key fetch should be retried');
   assert.equal(hashMobileGoogleNonce(nonce), nonceHash);
@@ -82,6 +86,10 @@ try {
     { nonce: undefined },
     { nonce: randomBytes(32).toString('base64url') },
     { nonce: 'bad' },
+    { email: undefined },
+    { email: 'bad' },
+    { email_verified: false },
+    { email_verified: 'true' },
   ]) {
     assert.equal(await verifyMobileGoogleToken(await signed(changes), nonceHash, policy), null);
   }
@@ -99,6 +107,8 @@ try {
     {
       issuer: 'https://accounts.google.com',
       subject: 'google-subject-fixture',
+      email: 'fixture@example.invalid',
+      name: 'Google user',
     },
   );
   // Verification alone is intentionally replayable: challenge consumption is separate.

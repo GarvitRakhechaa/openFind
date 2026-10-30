@@ -15,7 +15,11 @@
     "auth:spike": "tsx scripts/spike-mobile-session.mts",
     "auth:attempts-test": "tsx scripts/test-mobile-attempts.mts",
     "auth:google-verifier-test": "node --conditions=react-server --import tsx scripts/test-mobile-google-verifier.mts",
-    "auth:attempt-verification-test": "node --conditions=react-server --import tsx scripts/test-mobile-attempt-verification.mts"
+    "auth:attempt-verification-test": "node --conditions=react-server --import tsx scripts/test-mobile-attempt-verification.mts",
+    "auth:account-issuance-test": "node --conditions=react-server --import tsx scripts/test-mobile-account-issuance.mts",
+    "auth:request-test": "node --conditions=react-server --import tsx scripts/test-mobile-request.mts",
+    "owner:test": "node --conditions=react-server --import tsx scripts/test-owner.mts",
+    "owner:provisioning-test": "node --conditions=react-server --import tsx scripts/test-owner-provisioning.mts"
   },
   "dependencies": {
     "@better-auth/drizzle-adapter": "1.7.14",

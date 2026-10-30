@@ -2,9 +2,9 @@
 
 OpenFind is an Android-first, community-assisted phone-finding project. The intended design allows opted-in Android devices to detect nearby compatible BLE broadcasts and relay approximate location reports, while the owner uses a web dashboard from another device.
 
-## Status: Phase 11e (in progress) — isolated challenge-bound Google-token verification
+## Status: Phase 12 started — account ownership foundation
 
-An Expo Android app shell and disabled sign-in status screen are present in `apps/mobile`. The Next.js web app has a landing page, liveness endpoint, provisional Neon/Drizzle schema and a Google sign-in implementation with a protected placeholder dashboard. No Neon project has been connected or migrated, and real Google login has not been tested. Bluetooth discovery, mobile authentication, device ownership, location reporting and the privacy protocol are **not implemented**. Neither the app nor the site can find phones yet; no production security or offline-finding capability is claimed.
+An Expo Android app shell contains an experimental two-phone BLE diagnostic and a disabled mobile sign-in screen. The diagnostic has not been natively compiled or tested on devices. Phase 11 mobile authentication and real-device BLE testing are deferred. Phase 12 adds a provisional owner-mapping table, server-side session lookup and unregistered candidates for provisioning and owner-scoped device reads; legacy reconciliation, enrollment and public device routes are not implemented. The Next.js web app has a landing page, liveness endpoint, provisional Neon/Drizzle schema and a Google sign-in implementation with a protected placeholder dashboard. No Neon project has been connected or migrated, and real Google login has not been tested. Actual phone finding, mobile authentication, device ownership, location reporting and the privacy protocol are **not implemented**. Neither the app nor the site can find phones yet; no production security or offline-finding capability is claimed.
 
 ## Planned structure
 
@@ -65,6 +65,10 @@ GitHub Actions runs these checks and builds the web app, audits dependencies at 
 - [Phase 11d: inert challenge database foundation](docs/phase-11d-challenge-foundation.md)
 - [Phase 11e, part 1: Google verifier component](docs/phase-11e-google-verifier.md)
 - [Phase 11e, part 2: isolated challenge-bound verification](docs/phase-11e-attempt-verification.md)
+- [Phase 11e: candidate account and session issuance](docs/phase-11e-account-issuance.md)
+- [Phase 11e: candidate request boundary](docs/phase-11e-request-boundary.md)
+- [Early two-phone BLE diagnostic (device test deferred)](docs/ble-two-phone-test.md)
+- [Phase 12: account ownership foundation](docs/phase-12-account-ownership.md)
 
 The privacy design remains a proposal: encryption, metadata exposure, account/key recovery and anti-abuse measures require further specification and independent review before public release. BLE reliability depends on real devices, permissions and operating-system restrictions.
 

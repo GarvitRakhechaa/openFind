@@ -1,5 +1,6 @@
 import { sql } from 'drizzle-orm';
 import { check, index, pgTable, text, timestamp, uniqueIndex, uuid } from 'drizzle-orm/pg-core';
+import { user as authUser } from '../auth/schema';
 
 /** Inert challenge storage; no login endpoint uses this table yet. */
 export const mobileAuthAttempts = pgTable(
@@ -46,6 +47,21 @@ export const accounts = pgTable(
     check('accounts_auth_provider_nonempty', sql`length(trim(${table.authProvider})) > 0`),
     check('accounts_auth_subject_nonempty', sql`length(trim(${table.authSubject})) > 0`),
   ],
+);
+
+/** One-to-one link; no public endpoint creates or changes this mapping yet. */
+export const accountOwners = pgTable(
+  'account_owners',
+  {
+    accountId: uuid('account_id')
+      .primaryKey()
+      .references(() => accounts.id, { onDelete: 'restrict' }),
+    authUserId: text('auth_user_id')
+      .notNull()
+      .references(() => authUser.id, { onDelete: 'restrict' }),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+  },
+  (table) => [uniqueIndex('account_owners_auth_user_unique').on(table.authUserId)],
 );
 
 /** Provisional metadata only. Enrollment/ownership proof will be designed in later phases. */

@@ -49,6 +49,10 @@ jobs:
           pnpm --filter @openfind/web auth:attempts-test
           pnpm --filter @openfind/web auth:google-verifier-test
           pnpm --filter @openfind/web auth:attempt-verification-test
+          pnpm --filter @openfind/web auth:account-issuance-test
+          pnpm --filter @openfind/web auth:request-test
+          pnpm --filter @openfind/web owner:test
+          pnpm --filter @openfind/web owner:provisioning-test
 
       - name: Build web app
         run: pnpm --filter @openfind/web build

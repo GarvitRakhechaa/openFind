@@ -55,7 +55,12 @@ export async function verifyAndConsumeMobileAttempt(
   db: AttemptDb,
   input: { id: string; verifier: string; token: string },
   policy: Policy,
-): Promise<{ issuer: 'https://accounts.google.com'; subject: string } | null> {
+): Promise<{
+  issuer: 'https://accounts.google.com';
+  subject: string;
+  email: string;
+  name: string;
+} | null> {
   if (
     !isCanonical32(input?.id) ||
     !isCanonical32(input?.verifier) ||

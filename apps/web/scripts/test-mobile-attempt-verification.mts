@@ -26,7 +26,7 @@ globalThis.fetch = async (url) => {
 const policy = { webClientId: 'fixture-web-client', androidClientId: 'fixture-android-client' };
 const newVerifier = () => randomBytes(32).toString('base64url');
 async function issue(nonce: string, aud = policy.webClientId) {
-  return new SignJWT({ nonce })
+  return new SignJWT({ nonce, email: 'fixture@example.invalid', email_verified: true })
     .setProtectedHeader({ alg: 'RS256', kid: 'fixture-key' })
     .setIssuer('https://accounts.google.com')
     .setAudience(aud)
@@ -86,6 +86,8 @@ try {
   assert.deepEqual(await verifyAndConsumeMobileAttempt(db, { id, verifier, token }, policy), {
     issuer: 'https://accounts.google.com',
     subject: 'fixture-subject',
+    email: 'fixture@example.invalid',
+    name: 'Google user',
   });
   assert.equal(await verifyAndConsumeMobileAttempt(db, { id, verifier, token }, policy), null);
 

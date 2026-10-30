@@ -42,7 +42,12 @@ export async function verifyMobileGoogleToken(
   token: string,
   expectedNonceHash: string,
   policy: GooglePolicy,
-): Promise<{ issuer: 'https://accounts.google.com'; subject: string } | null> {
+): Promise<{
+  issuer: 'https://accounts.google.com';
+  subject: string;
+  email: string;
+  name: string;
+} | null> {
   if (
     typeof token !== 'string' ||
     token.length === 0 ||
@@ -85,7 +90,17 @@ export async function verifyMobileGoogleToken(
       typeof payload.exp !== 'number' ||
       !Number.isInteger(payload.exp) ||
       typeof payload.nonce !== 'string' ||
-      !isCanonicalNonce(payload.nonce)
+      !isCanonicalNonce(payload.nonce) ||
+      typeof payload.email !== 'string' ||
+      payload.email.length < 3 ||
+      payload.email.length > 254 ||
+      payload.email !== payload.email.trim() ||
+      Array.from(payload.email).some(
+        (char) => char.charCodeAt(0) <= 0x20 || char.charCodeAt(0) === 0x7f,
+      ) ||
+      payload.email.split('@').length !== 2 ||
+      !payload.email.split('@').every(Boolean) ||
+      payload.email_verified !== true
     ) {
       return null;
     }
@@ -93,7 +108,16 @@ export async function verifyMobileGoogleToken(
     const expected = Buffer.from(expectedNonceHash, 'hex');
     if (!timingSafeEqual(actual, expected)) return null;
     // Both Google issuer aliases identify the same provider; use a canonical key.
-    return { issuer: 'https://accounts.google.com', subject: payload.sub };
+    const name =
+      typeof payload.name === 'string' && payload.name.trim().length > 0
+        ? payload.name.trim().slice(0, 200)
+        : 'Google user';
+    return {
+      issuer: 'https://accounts.google.com',
+      subject: payload.sub,
+      email: payload.email.toLowerCase(),
+      name,
+    };
   } catch {
     // Includes invalid JWTs and key-service outages. Never emit token contents.
     return null;
