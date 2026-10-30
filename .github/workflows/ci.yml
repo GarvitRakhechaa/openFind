@@ -53,6 +53,8 @@ jobs:
           pnpm --filter @openfind/web auth:request-test
           pnpm --filter @openfind/web owner:test
           pnpm --filter @openfind/web owner:provisioning-test
+          pnpm --filter @openfind/web owner:devices-test
+          pnpm --filter @openfind/web owner:web-test
 
       - name: Build web app
         run: pnpm --filter @openfind/web build

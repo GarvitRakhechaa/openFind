@@ -6,7 +6,8 @@ Phase 9 introduces a provisional PostgreSQL schema and a server-only Neon HTTP c
 
 - `accounts`: opaque ID, external auth provider and subject reference, timestamps. Provider/subject is unique. Authentication provider and account recovery are not configured.
 - `devices`: opaque ID, owner FK, display name, preliminary enrollment/lost statuses and timestamps. Deleting an account with devices is restricted pending a reviewed deletion flow.
-- `account_owners`: one-to-one link between a Better Auth `user` and a provisional OpenFind account. An isolated candidate for new-account mapping exists but is not registered; legacy reconciliation is not implemented. Do not manually link real accounts based on email or unverified data. A foreign key does not prove the mapping is correct or authorize access.
+- `account_owners`: one-to-one link between a Better Auth `user` and a provisional OpenFind account. The web setup route creates new-account mappings from validated sessions; legacy reconciliation is not implemented. Do not manually link real accounts based on email or unverified data. A foreign key alone does not prove the mapping is correct or authorize access.
+- `owner_setup_limits`: one fixed-window setup rate-limit bucket per auth user; removed with the user. It is not a comprehensive abuse defense.
 - `user`, `account`, `session`, `verification`, `rate_limit`: Better Auth's Google login, server-side session and rate-limit schema. These are separate from the provisional OpenFind `accounts` table; no device-to-auth-user mapping is implemented yet.
 - `mobile_auth_attempts`: inert, short-lived mobile login challenge storage. No endpoint uses it yet; it holds hashes rather than raw nonce/verifier values. The five-minute limit and cleanup query are provisional, not a deployed retention policy. See `docs/phase-11d-challenge-foundation.md`.
 

@@ -1,35 +1,27 @@
 # Phase 12 — Account ownership foundation
 
-**Status:** started, not complete. Mobile authentication and the real two-phone BLE test are deferred. No device API or account-mapping provisioning endpoint is enabled.
+**Implementation status:** planned Phase 12 web/account ownership scope complete; **not production-ready or end-to-end verified**. Phase 11 Android authentication and the real two-phone BLE test remain deferred.
 
-## Goal
+## What is implemented
 
-A future web or mobile request must resolve ownership from an authenticated server-side session, not from a client-supplied account ID or email. Better Auth users and OpenFind's provisional `accounts` currently live in separate tables. Device access requires a safe, reviewed mapping and per-device authorization; this phase begins that foundation.
+- One-to-one `account_owners` mapping between a Better Auth user and an OpenFind account (`drizzle/0003_swift_shockwave.sql`). Referenced user/account deletion is restricted while a mapping exists.
+- The signed-in dashboard provides an explicit **Set up account** action. `POST /api/owner/setup` derives identity from a verified Better Auth session and its stored Google provider binding. It creates a new OpenFind account and mapping atomically. It does not trust client-supplied owner IDs or link by email.
+- Pre-existing unmatched app accounts or ambiguous/missing Google bindings are not automatically claimed: setup returns a generic review-needed result. There is no automatic backfill, support workflow, or approved legacy reconciliation procedure.
+- The setup request requires the exact configured browser origin, rejects cross-site Fetch Metadata, requires a fixed custom header, accepts no body, enforces a short streaming deadline and returns `no-store`. Errors do not expose database details or account IDs.
+- `owner_setup_limits` (`drizzle/0004_magical_switch.sql`) provides a database-backed, atomic fixed-window limit of ten setup attempts per authenticated user per minute. One row per user is removed with that user. This is not comprehensive abuse protection; unauthenticated traffic and infrastructure-level protection still need review.
+- The dashboard lists only mapped owner devices through a server-side query joining the current session, owner mapping and device owner. It hides devices with revoked status or a non-null revocation timestamp. The list is capped at 100 and explicitly signals truncation; pagination is not implemented.
+- `getOwnedDeviceCandidate` implements a scoped read helper but is not exposed as an endpoint. An invalid, missing, unowned or revoked device produces no detail. There is no device enrollment, proof of control, mutation, report endpoint or real finding in this phase.
 
-## What was added
+## Security boundary and release limitations
 
-- `account_owners` links one Better Auth `user` to one OpenFind account using a unique `auth_user_id`, a primary-key account ID and foreign keys. Deletion of either referenced record is restricted while a mapping exists. Migration: `apps/web/drizzle/0003_swift_shockwave.sql`.
-- `src/auth/owner.ts` adds server-only `resolveMappedOwner`: it validates the session through Better Auth and looks up the mapped account by the **verified session user ID**. A missing session or missing mapping returns `null`; database errors propagate. Client-supplied user or account IDs are not accepted by this resolver. `getCurrentOwner` is a convenience wrapper; no application route calls it yet.
-- `scripts/test-owner.mts` uses synthetic PGlite users, sessions and manually inserted fixture mappings to test two-user isolation, missing mappings, spoofed headers, forged/expired/revoked sessions, uniqueness and foreign-key/delete restrictions. CI runs `pnpm --filter @openfind/web owner:test`.
-- `src/auth/owner-provisioning.ts` is an **unregistered candidate** for creating a new app account and mapping in one SQL statement. It derives identity from a Better Auth session and the stored Google provider binding, checks the session row again, and never attaches an existing unmatched account. `scripts/test-owner-provisioning.mts` checks idempotent calls, isolation, missing/ambiguous providers, collision refusal, stale sessions and rollback on a simulated mapping failure. CI runs `pnpm --filter @openfind/web owner:provisioning-test`.
+- A foreign key establishes row existence, **not** the correctness of a mapping or device ownership proof. The setup flow relies on Better Auth to validate the session and Google provider-account binding. Existing mappings must only be created or changed through approved controls.
+- Authenticated read/mutation operations in future phases must independently enforce owner scoping and applicable device state; enrollment and proof of control are separate work.
+- The provisioning statement is atomic, and PGlite tests simulate rollback after a mapping-write failure. Repeated requests and rate limits were exercised with PGlite, but **independent concurrent Neon connections were not tested**. Session checks are not locks against later concurrent revocation.
+- Request origin validation depends on a correctly configured canonical `BETTER_AUTH_URL`; reverse-proxy/IP trust, distributed abuse controls beyond this per-user limiter and client behavior in the actual deployment require testing/review. The existing Better Auth test warns about unresolved trusted client IP; address it before deployment.
+- There is no reviewed account/device deletion, recovery, retention or legacy-account reconciliation workflow. Rate buckets are deleted with the auth user; referenced owner mappings intentionally restrict deletion.
+- Real Google OAuth, real Neon migrations/connectivity, Vercel deployment, Android auth, independent security/privacy review and production reliability are **not tested**. Completion of the implementation scope does not mean launch readiness.
 
-## Device authorization — part 1 of 2
-
-`src/auth/owned-devices.ts` contains unregistered read-only list and detail candidates. Each query joins the authenticated user, their mapping and their devices, and checks the current session row in the same statement. The caller cannot supply an owner ID. A missing, invalid, unowned or revoked device returns no detail. Revoked devices are excluded if either their status is revoked or `revoked_at` is set. An authenticated but unmapped user sees an empty list.
-
-The list is capped at 100 entries and explicitly reports `hasMore`; pagination is not implemented. Database errors propagate. There is no mutation, enrollment, device-proof check, report access or public route. `scripts/test-owned-devices.mts` exercises two-user isolation, spoofed headers, malformed IDs, revoked records, unmapped accounts, bounded lists, expired/revoked sessions and database error propagation using PGlite fixtures.
-
-## Security boundary and limitations
-
-- **A foreign key proves only that rows exist. It does not prove the mapping is correct or that a user owns a device.** No endpoint or automatic job creates mappings. The older lookup test's direct SQL inserts are fixtures, not an approved provisioning method.
-- The candidate relies on Better Auth to validate the session and establish the correct Google provider binding. Existing mappings are treated as trusted, so they must only be created by an approved controlled flow; the schema alone cannot verify the mapping. Do not link accounts based on email or a user-provided ID.
-- Legacy identity collisions and missing or ambiguous Google bindings fail closed with `requires-review`; there is no automatic backfill or approved reconciliation procedure. Database errors propagate. The candidate is not yet a public endpoint; before any route calls it, define request protections, rate limiting, error handling and independent review.
-- Account creation and mapping use a single atomic PostgreSQL statement; the test simulates a mapping-write failure to check rollback. Repeated calls were exercised on one PGlite connection, **not independent concurrent Neon connections**. Independent concurrency and Google/Neon staging tests remain release gates. The session row is rechecked, but this does not lock against a revocation concurrent with or after the statement.
-- Resolving an account is not device authorization. Every future resource query/mutation must include the owner-account constraint and check enrollment/revocation state. Device enrollment and proof of control do not exist yet.
-- Restricted deletes are deliberate safety defaults, not a finished account-deletion workflow. A reviewed lifecycle for revocation, retention and deletion is still needed.
-- Better Auth login is tested only with synthetic sessions; real Google, Neon, Vercel and mobile authentication remain unverified. No claims of production readiness or privacy/security review.
-
-## Local verification
+## Automated local verification
 
 ```bash
 corepack pnpm --filter @openfind/web db:check
@@ -37,12 +29,13 @@ corepack pnpm --filter @openfind/web db:test
 corepack pnpm --filter @openfind/web owner:test
 corepack pnpm --filter @openfind/web owner:provisioning-test
 corepack pnpm --filter @openfind/web owner:devices-test
+corepack pnpm --filter @openfind/web owner:web-test
 ```
 
-The tests apply migrations to a temporary in-memory PGlite database; they never migrate Neon. Review all SQL, the target database, permissions and rollback/backup plan before applying any migration to a real database. Do not paste credentials or session cookies into chat.
+Tests use isolated PGlite, synthetic users/sessions and fixture devices. They cover session validation, collision refusal, owner isolation, request origin/header/body checks, stalled body cancellation, per-user limits, database-error handling and rollback. The web-boundary test calls the shared HTTP handler directly; it does not perform an actual Google login or full browser/Neon/Vercel end-to-end test.
 
-## Next
+Migrations are applied only to an in-memory test database during these checks. Before applying migrations to a real database, verify the target, prior migration history, backup and permissions. Never share credentials or session cookies in chat.
 
-**Part 2 of 2:** integrate the account-mapping and scoped device reads into the web flow with appropriate request protections, test the resulting boundary, and close the planned Phase 12 implementation scope. A safe legacy-collision policy must fail closed; automatic reconciliation is not promised. Device enrollment and proof of control belong to a later phase.
+## Later work
 
-Implementation closure must not be confused with production readiness: independent concurrent Neon tests, real Google/Neon staging, Android authentication, lifecycle/deletion work and independent security review remain outstanding. The BLE feasibility test remains deferred at the user's request.
+Complete and test Phase 11 mobile authentication; define real device enrollment, proof of control, lifecycle and appropriate mutations; conduct multi-connection staging tests and security/privacy review. BLE feasibility testing remains deferred at the user's request.

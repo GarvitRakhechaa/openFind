@@ -1,6 +1,6 @@
 # OpenFind — 30-Phase Roadmap
 
-**Status:** Phase 12 started · Phase 11 and real-device BLE testing deferred  
+**Status:** Phase 12 web implementation complete; verification pending · Phase 11 and real-device BLE testing deferred  
 **Last updated:** 30 October 2026
 
 > **Note:** Yeh file available project documents aur conversation context se reconstruct ki gayi hai. Original 30-phase list ka exact text workspace mein saved nahi tha, isliye particularly phases 13–30 ki wording aur ordering original se alag ho sakti hai. Progress aur pending items ko current project state ke hisaab se mark kiya gaya hai.
@@ -82,10 +82,10 @@ Yeh guaranteed live ya exact location nahi hai. Koi helper nearby na ho, permiss
 - Related documents: `docs/phase-11-mobile-auth-decision.md` aur `docs/phase-11*.md`.
 
 ## Phase 12 — Account and ownership foundation
-**Status: Started; incomplete**
-- Authenticated user aur OpenFind account ke beech one-to-one mapping ki foundation banana.
-- Session-based owner lookup aur synthetic isolation tests added hain.
-- Secure mapping creation/reconciliation, device enrollment aur per-device authorization abhi pending hain.
+**Status: Web implementation complete; verification pending**
+- Authenticated user aur OpenFind account ke beech one-to-one mapping foundation.
+- Protected web setup action aur owner-scoped dashboard device listing connected hain. Existing unmatched accounts automatically link nahi hote.
+- Real Google/Neon staging, legacy reconciliation, device enrollment aur production security review abhi pending hain.
 - Document: `docs/phase-12-account-ownership.md`.
 
 ## Phase 13 — Two-phone BLE feasibility
@@ -200,7 +200,7 @@ Yeh guaranteed live ya exact location nahi hai. Koi helper nearby na ho, permiss
 
 ## Current priorities and dependencies
 
-1. **Now:** Phase 12 account ownership foundation ko safely complete karna; device access tab tak expose nahi karna.
+1. **Now:** Phase 12 web implementation complete hai; real staging aur security verification pending hain. Device enrollment aur ownership proof later phase mein implement honge.
 2. **Deferred by request:** Phase 11 mobile sign-in aur Phase 13 ka real two-phone BLE test. Dono ko actual mobile finding ke liye later address karna hoga.
 3. **Before release:** real-device feasibility/reliability, privacy/security and anti-stalking reviews, live infrastructure testing aur open audit blocker ka resolution mandatory hain.
 

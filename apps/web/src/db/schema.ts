@@ -1,5 +1,14 @@
 import { sql } from 'drizzle-orm';
-import { check, index, pgTable, text, timestamp, uniqueIndex, uuid } from 'drizzle-orm/pg-core';
+import {
+  check,
+  index,
+  integer,
+  pgTable,
+  text,
+  timestamp,
+  uniqueIndex,
+  uuid,
+} from 'drizzle-orm/pg-core';
 import { user as authUser } from '../auth/schema';
 
 /** Inert challenge storage; no login endpoint uses this table yet. */
@@ -49,7 +58,7 @@ export const accounts = pgTable(
   ],
 );
 
-/** One-to-one link; no public endpoint creates or changes this mapping yet. */
+/** One-to-one link; the web setup handler creates new-account mappings only. */
 export const accountOwners = pgTable(
   'account_owners',
   {
@@ -62,6 +71,19 @@ export const accountOwners = pgTable(
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   },
   (table) => [uniqueIndex('account_owners_auth_user_unique').on(table.authUserId)],
+);
+
+/** One persistent setup-rate bucket per authenticated user, deleted with the user. */
+export const ownerSetupLimits = pgTable(
+  'owner_setup_limits',
+  {
+    userId: text('user_id')
+      .primaryKey()
+      .references(() => authUser.id, { onDelete: 'cascade' }),
+    windowStartedAt: timestamp('window_started_at', { withTimezone: true }).defaultNow().notNull(),
+    attempts: integer('attempts').default(1).notNull(),
+  },
+  (table) => [check('owner_setup_limits_attempts_valid', sql`${table.attempts} BETWEEN  1 AND 10`)],
 );
 
 /** Provisional metadata only. Enrollment/ownership proof will be designed in later phases. */
