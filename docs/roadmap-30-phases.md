@@ -1,6 +1,6 @@
 # OpenFind — 30-Phase Roadmap
 
-**Status:** Phase 12 web implementation complete; verification pending · Phase 11 and real-device BLE testing deferred  
+**Status:** Phase 14 started · Phase 12 web implementation complete, verification pending · Phase 11 and real-device BLE testing deferred  
 **Last updated:** 30 October 2026
 
 > **Note:** Yeh file available project documents aur conversation context se reconstruct ki gayi hai. Original 30-phase list ka exact text workspace mein saved nahi tha, isliye particularly phases 13–30 ki wording aur ordering original se alag ho sakti hai. Progress aur pending items ko current project state ke hisaab se mark kiya gaya hai.
@@ -96,10 +96,11 @@ Yeh guaranteed live ya exact location nahi hai. Koi helper nearby na ho, permiss
 - Document: `docs/ble-two-phone-test.md`.
 
 ## Phase 14 — Android capabilities, permissions and consent
-**Status: Planned**
-- Bluetooth, location aur Android-version-specific permission/capability handling design aur implement karna.
-- Owner protection aur helper participation ke liye clear, separate consent aur visible status dena.
-- Unsupported hardware ya disabled permissions ke liye honest error states dikhana.
+**Status: Started; incomplete**
+- Read-only diagnostic permission aur capability status screen added; native build aur real-device checks pending hain.
+- Owner protection aur helper participation ke actual separate consent, withdrawal aur enforcement abhi implement nahi hue.
+- Future finding ke runtime permissions, background restrictions aur hardware error handling ko abhi design aur test karna hai.
+- Document: `docs/phase-14-android-permissions.md`.
 
 ## Phase 15 — Device enrollment and ownership
 **Status: Planned**
@@ -200,7 +201,7 @@ Yeh guaranteed live ya exact location nahi hai. Koi helper nearby na ho, permiss
 
 ## Current priorities and dependencies
 
-1. **Now:** Phase 12 web implementation complete hai; real staging aur security verification pending hain. Device enrollment aur ownership proof later phase mein implement honge.
+1. **Now:** Phase 14 ka permissions/capabilities foundation shuru hai; actual consent aur device testing pending hain. Phase 12 web implementation complete hai, lekin staging/security verification aur future device enrollment pending hain.
 2. **Deferred by request:** Phase 11 mobile sign-in aur Phase 13 ka real two-phone BLE test. Dono ko actual mobile finding ke liye later address karna hoga.
 3. **Before release:** real-device feasibility/reliability, privacy/security and anti-stalking reviews, live infrastructure testing aur open audit blocker ka resolution mandatory hain.
 

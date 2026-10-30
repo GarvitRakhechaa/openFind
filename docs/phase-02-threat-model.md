@@ -1,6 +1,6 @@
 # OpenFind — Phase 02: Threat Model & Trust Boundaries
 
-**Status:** Draft v1 — requires protocol design and independent review  
+**Status:** Planning threat model reviewed on 30 October 2026; protocol, implementation controls and independent security review remain open  
 **Scope:** Android app, helper devices, owner web dashboard, Vercel API, database and supporting services. This is a design document, not evidence that controls have been implemented or audited.
 
 ## 1. Purpose

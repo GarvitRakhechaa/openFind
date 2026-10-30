@@ -1,6 +1,6 @@
 # OpenFind — Phase 01: Product Scope & Acceptance Criteria
 
-**Status:** Draft v1 for implementation planning  
+**Status:** Planning baseline reviewed on 30 October 2026; release gates and implementation verification remain open  
 **Project:** OpenFind — Android offline phone-finding network  
 **Phase scope:** Product requirements only; no application code
 
@@ -137,7 +137,7 @@ The dashboard shows **No location available**, or the last previously received r
 | Web and API | Next.js, deployed on Vercel |
 | Database | Neon PostgreSQL, Drizzle ORM |
 | Validation | Zod |
-| Authentication | Provider and mobile-compatible browser-based flow to be selected during auth design |
+| Authentication | Google selected as initial sign-in provider. Web sign-in is implemented but not tested with real Google; mobile integration is deferred and its secure flow is not complete. |
 | Maps | MVP may start with a map link; provider and cost to be selected before map integration |
 | Source and checks | GitHub, Apache-2.0 proposed, GitHub Actions |
 
@@ -161,7 +161,7 @@ Security and privacy protocol independently reviewed; critical findings addresse
 
 1. Which two Android phone models and Android versions will be used for the first test?
 2. Which Android versions and manufacturers will be officially supported at launch after device testing?
-3. Which auth provider and recovery methods will be used?
+3. Google is selected as the initial sign-in provider; what independently accessible account and report-key recovery methods will be used, and how will they be tested?
 4. What is the final report privacy protocol, including reporter key access, report lookup, server-visible metadata and secure web recovery?
 5. What retention period and deletion semantics apply to reports and accounts?
 6. Which map provider, hosting budgets and operational targets will be used?

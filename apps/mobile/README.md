@@ -1,6 +1,6 @@
 # OpenFind Android app
 
-The React Native app shell uses Expo SDK 58, Expo Router and a development-client build profile. Phase 11a adds an account screen, but mobile Google sign-in is intentionally disabled until the session-handoff design is reviewed. Finding, Bluetooth, location, authentication and reporting are not implemented. See `../../docs/phase-11-mobile-auth-decision.md`.
+The React Native app shell uses Expo SDK 58, Expo Router and a development-client build profile. Phase 14 adds a read-only permission/capability screen; its native status function has not been compiled or tested on a phone. Mobile Google sign-in is deferred and intentionally disabled. An experimental foreground-only two-phone BLE diagnostic is included, but has not been natively built or tested on real devices. Actual finding, location reporting and mobile authentication are not implemented. See `../../docs/ble-two-phone-test.md`.
 
 ## Requirements
 
@@ -41,5 +41,5 @@ Open the development build on the device and connect it to Metro. The device and
 - `corepack pnpm --filter @openfind/mobile typecheck` validates app TypeScript.
 - `corepack pnpm exec expo install --check` from this directory checks Expo dependency compatibility.
 - A local Android JavaScript bundle export was tested in Phase 7. It does not prove an APK builds, installs or runs on a real phone.
-- No Bluetooth permissions, backend or location features are present; the app must not be relied on to find a phone.
+- The BLE lab module declares Bluetooth and location permissions for the diagnostic. It is foreground-only, uses a fixed public test UUID, and does not read or send location. No phone-finding or reporting functionality is implemented; do not rely on this app to find a phone.
 - Read the root README for the current dependency audit blocker.

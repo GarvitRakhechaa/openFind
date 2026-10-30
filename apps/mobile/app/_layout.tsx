@@ -10,6 +10,8 @@ export default function RootLayout() {
       >
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="sign-in" options={{ title: 'Owner account' }} />
+        <Stack.Screen name="ble-lab" options={{ title: 'Bluetooth test' }} />
+        <Stack.Screen name="permissions" options={{ title: 'Permissions' }} />
         <Stack.Screen name="about" options={{ title: 'About OpenFind' }} />
       </Stack>
     </>

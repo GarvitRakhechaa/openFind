@@ -6,7 +6,8 @@
   "scripts": {
     "start": "expo start --dev-client",
     "android": "expo run:android",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "permissions:test": "node --experimental-strip-types scripts/test-lab-permissions.mjs"
   },
   "dependencies": {
     "expo": "~58.0.21",

@@ -1,6 +1,6 @@
 # OpenFind — Phase 04: Architecture & Data Model
 
-**Status:** Architecture proposal v0.1; no application code or database deployed  
+**Status:** Original architecture proposal; some foundations are now implemented, but no live database/deployment or end-to-end verification has been completed  
 **Related:** `phase-01-product-scope.md`, `phase-02-threat-model.md`, `phase-03-privacy-protocol.md`
 
 ## 1. Phase objective
@@ -248,7 +248,7 @@ openfind/
 └── README.md
 ```
 
-This is a proposed structure, not yet a configured repository. Database schema/migrations may initially live in `apps/web` and can move to a shared package if justified. Native generated directories and framework-specific configuration depend on the Expo workflow. Never include secrets in shared packages.
+This was the original proposed structure. A repository now exists; schema and migrations currently live in `apps/web`, and the experimental local BLE module is named `openfind-ble-lab`. Several proposed packages and capabilities remain unimplemented. See the root README for current status. Database components can move to a shared package if justified. Native generated directories and framework-specific configuration depend on the Expo workflow. Never include secrets in shared packages.
 
 ## 9. Non-functional requirements and operational checks
 
@@ -268,7 +268,8 @@ This is a proposed structure, not yet a configured repository. Database schema/m
 - [x] Proposed API routes and authorization boundaries described.
 - [x] Repository layout, security handling and operational dependencies proposed.
 - [ ] Exact privacy protocol and metadata trade-offs approved.
-- [ ] Authentication provider, recovery, retention and abuse-control decisions finalized.
+- [x] Google selected as the initial authentication provider (real web/mobile verification remains pending).
+- [ ] Recovery, retention and abuse-control decisions finalized.
 - [ ] Implementation and independent security review completed.
 
 **Status:** Planning draft complete; production readiness and security remain unverified.
