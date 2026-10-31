@@ -19,7 +19,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       # Scan the checkout before dependencies are installed; this scans the current
       # tree, not all Git history. Update and pin the image digest before release.
