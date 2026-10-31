@@ -34,9 +34,14 @@ export default function HomePage() {
             <a href="#how-it-works">How it works</a>
             <a href="#privacy">Privacy</a>
           </nav>
-          <span className="dev-badge">
-            <span aria-hidden="true" /> In development
-          </span>
+          <div className="nav-actions">
+            <span className="dev-badge">
+              <span aria-hidden="true" /> In development
+            </span>
+            <a className="nav-signin" href="/sign-in">
+              Sign in
+            </a>
+          </div>
         </div>
       </header>
 

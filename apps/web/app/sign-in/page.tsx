@@ -6,7 +6,6 @@ export const dynamic = 'force-dynamic';
 
 export default function SignInPage() {
   const available = isAuthConfigured();
-
   return (
     <main className="auth-page">
       <Link className="brand" href="/">
@@ -25,7 +24,7 @@ export default function SignInPage() {
         <p className="auth-intro">Sign in to your OpenFind account using Google.</p>
         <SignInButton available={available} />
         {!available ? (
-          <p className="auth-notice">Sign-in isn&apos;t configured in this environment yet.</p>
+          <p className="auth-notice">Sign-in isn’t configured in this environment yet.</p>
         ) : null}
         <p className="auth-footnote">
           OpenFind is in development. Device finding and recovery are not available yet.

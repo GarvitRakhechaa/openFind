@@ -1,6 +1,6 @@
 # OpenFind Android app
 
-The React Native app shell uses Expo SDK 58, Expo Router and a development-client build profile. Phase 14 adds a read-only permission/capability screen; its native status function has not been compiled or tested on a phone. Mobile Google sign-in is deferred and intentionally disabled. An experimental foreground-only two-phone BLE diagnostic is included, but has not been natively built or tested on real devices. Actual finding, location reporting and mobile authentication are not implemented. See `../../docs/ble-two-phone-test.md`.
+The React Native app shell uses Expo SDK 58, Expo Router and a development-client build profile. The native configuration targets Android 7 (API 24) and later, but no APK or real-device compatibility has been verified. Future SDK or feature requirements may raise the effective minimum. Phase 14 adds a read-only permission/capability screen; its native status function has not been compiled or tested on a phone. Mobile Google sign-in is deferred and intentionally disabled. An experimental foreground-only two-phone BLE diagnostic is included, but has not been natively built or tested on real devices. Actual finding, location reporting and mobile authentication are not implemented. See `../../docs/ble-two-phone-test.md`.
 
 ## Requirements
 

@@ -1,7 +1,7 @@
 import 'server-only';
 
-// Candidate request boundary. It is not registered as an HTTP endpoint.
-// The future handler must still apply reviewed origin, abuse and response rules.
+// Bounded body parser used by the guarded mobile API. Deployment-level
+// origin, edge-abuse and response controls still require staging review.
 const MAX_BYTES = 12_288;
 const READ_DEADLINE_MS = 3_000;
 const secretPattern = /^[A-Za-z0-9_-]{43}$/;
@@ -84,8 +84,12 @@ export async function readMobileAuthBody(
 ): Promise<MobileExchangeBody | null>;
 export async function readMobileAuthBody(
   request: Request,
-  kind: 'start' | 'exchange',
-): Promise<MobileStartBody | MobileExchangeBody | null> {
+  kind: 'empty',
+): Promise<Record<string, never> | null>;
+export async function readMobileAuthBody(
+  request: Request,
+  kind: 'start' | 'exchange' | 'empty',
+): Promise<MobileStartBody | MobileExchangeBody | Record<string, never> | null> {
   const length = request.headers.get('content-length');
   const encoding = request.headers.get('content-encoding');
   if (
@@ -106,6 +110,7 @@ export async function readMobileAuthBody(
   }
   if (!isPlainRecord(body)) return null;
   const keys = Object.keys(body).sort();
+  if (kind === 'empty') return keys.length === 0 ? {} : null;
   if (kind === 'start') {
     if (
       keys.length !== 1 ||

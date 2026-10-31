@@ -21,7 +21,15 @@
     "owner:test": "node --conditions=react-server --import tsx scripts/test-owner.mts",
     "owner:provisioning-test": "node --conditions=react-server --import tsx scripts/test-owner-provisioning.mts",
     "owner:devices-test": "node --conditions=react-server --import tsx scripts/test-owned-devices.mts",
-    "owner:web-test": "node --conditions=react-server --import tsx scripts/test-owner-web-boundary.mts"
+    "owner:web-test": "node --conditions=react-server --import tsx scripts/test-owner-web-boundary.mts",
+    "auth:mobile-start-test": "node --conditions=react-server --import tsx scripts/test-mobile-start-handler.mts",
+    "auth:mobile-exchange-test": "node --conditions=react-server --import tsx scripts/test-mobile-exchange-handler.mts",
+    "auth:mobile-flow-test": "node --conditions=react-server --import tsx scripts/test-mobile-auth-flow.mts",
+    "auth:mobile-rate-limit-test": "node --conditions=react-server --import tsx scripts/test-mobile-rate-limit.mts",
+    "auth:mobile-controller-test": "node --import tsx ../mobile/scripts/test-mobile-auth-controller.mts",
+    "auth:mobile-native-adapter-test": "node --import tsx ../mobile/scripts/test-native-mobile-auth.mts",
+    "auth:mobile-integration-test": "node --import tsx ../mobile/scripts/test-mobile-auth-integration.mts",
+    "auth:mobile-backend-test": "node --conditions=react-server --import tsx scripts/test-mobile-backend.mts"
   },
   "dependencies": {
     "@better-auth/drizzle-adapter": "1.7.14",

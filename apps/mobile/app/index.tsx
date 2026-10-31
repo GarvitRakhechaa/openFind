@@ -27,15 +27,22 @@ export default function HomeScreen() {
           </View>
           <Text style={styles.cardTitle}>Finding is not active yet</Text>
           <Text style={styles.cardText}>
-            Bluetooth discovery, accounts, location reporting, and the owner dashboard are not
-            implemented in this build. Please donâ€™t rely on it to find a lost phone.
+            The Bluetooth lab is only a two-phone test. Real finding and location reporting are not
+            active. Mobile sign-in is available only in explicitly configured test builds. Please
+            don’t rely on this app to find a lost phone.
           </Text>
         </View>
+        <Link href="/permissions" style={styles.link}>
+          View permissions and capabilities →
+        </Link>
+        <Link href="/ble-lab" style={styles.link}>
+          Open two-phone Bluetooth test →
+        </Link>
         <Link href="/sign-in" style={styles.link}>
           View sign-in status →
         </Link>
         <Link href="/about" style={styles.link}>
-          Learn about the project â†’
+          Learn about the project →
         </Link>
         <Text style={styles.footer}>Built with privacy and community in mind.</Text>
       </ScrollView>

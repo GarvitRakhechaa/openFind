@@ -20,7 +20,7 @@ type Result =
   | { status: 'requires-review' };
 
 /**
- * Unregistered candidate: creates a NEW app account and its mapping together.
+ * Creates a NEW app account and its mapping together, from a verified session.
  * It trusts Better Auth's server-validated Google provider-account binding.
  * Existing unmatched app accounts are never claimed automatically.
  * This is not a device authorization check or an HTTP request handler.

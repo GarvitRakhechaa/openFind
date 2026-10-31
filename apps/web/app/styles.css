@@ -648,21 +648,6 @@ a:focus-visible {
   }
 }
 
-/* Auth pages (Phase 10) */
-.nav-actions {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-.nav-signin {
-  color: #245a48;
-  font-size: 13px;
-  font-weight: 700;
-  white-space: nowrap;
-}
-.nav-signin:hover {
-  color: #398162;
-}
 .auth-page {
   min-height: 100vh;
   padding: 48px 24px;
@@ -774,5 +759,24 @@ a:focus-visible {
   }
   .auth-card h1 {
     font-size: 35px;
+  }
+}
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.nav-signin {
+  color: #245a48;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.nav-signin:hover {
+  color: #398162;
+}
+@media (max-width: 420px) {
+  .nav-actions {
+    gap: 10px;
   }
 }

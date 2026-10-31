@@ -7,7 +7,6 @@ const migrationDirectory = new URL('../drizzle/', import.meta.url);
 const journal = JSON.parse(
   await readFile(new URL('meta/_journal.json', migrationDirectory), 'utf8'),
 );
-
 const db = new PGlite();
 
 try {
@@ -23,7 +22,6 @@ try {
     "INSERT INTO accounts (auth_provider, auth_subject) VALUES ('test-provider', 'test-user') RETURNING id",
   );
   const ownerId = owner.rows[0].id;
-
   const device = await db.query(
     "INSERT INTO devices (owner_account_id, display_name) VALUES ($1, 'Test phone') RETURNING enrollment_status, lost_status",
     [ownerId],
@@ -38,13 +36,11 @@ try {
     (error) => error.code === '23505',
     'provider/subject must be unique',
   );
-
   await assert.rejects(
     db.query("INSERT INTO accounts (auth_provider, auth_subject) VALUES ('', 'another-user')"),
     (error) => error.code === '23514',
     'empty providers must be rejected',
   );
-
   await assert.rejects(
     db.query(
       "INSERT INTO devices (owner_account_id, display_name) VALUES ('00000000-0000-4000-8000-000000000001', 'Unknown owner')",
@@ -52,7 +48,6 @@ try {
     (error) => error.code === '23503',
     'device owner must exist',
   );
-
   await assert.rejects(
     db.query(
       "INSERT INTO devices (owner_account_id, display_name, lost_status) VALUES ($1, 'Test phone', 'invalid')",
@@ -61,7 +56,6 @@ try {
     (error) => error.code === '23514',
     'invalid status must be rejected',
   );
-
   await assert.rejects(
     db.query('DELETE FROM accounts WHERE id = $1', [ownerId]),
     (error) => error.code === '23001',

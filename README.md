@@ -59,6 +59,7 @@ GitHub Actions runs these checks and builds the web app, audits dependencies at 
 - [Phase 2: threat model](docs/phase-02-threat-model.md)
 - [Phase 3: privacy protocol proposal](docs/phase-03-privacy-protocol.md)
 - [Phase 4: architecture and data model](docs/phase-04-architecture-data-model.md)
+- [Phase 6: dependency audit follow-up](docs/phase-06-dependency-audit.md)
 - [Phase 11a: mobile authentication safety decision](docs/phase-11-mobile-auth-decision.md)
 - [Phase 11b: proposed mobile Google login design](docs/phase-11b-mobile-auth-design.md)
 - [Phase 11c: compatibility spike and remaining blockers](docs/phase-11c-compatibility-spike.md)

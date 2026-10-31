@@ -6,7 +6,6 @@ import { authClient } from '../../src/auth/client';
 export default function SignOutButton() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-
   async function signOut() {
     setLoading(true);
     setError('');
@@ -19,7 +18,6 @@ export default function SignOutButton() {
       setLoading(false);
     }
   }
-
   return (
     <div>
       <button className="auth-logout" onClick={signOut} disabled={loading} type="button">

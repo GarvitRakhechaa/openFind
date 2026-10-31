@@ -117,7 +117,10 @@ export default function PermissionsScreen() {
           location.
         </Text>
         {!requirements.supported ? (
-          <Text style={styles.note}>This diagnostic status supports Android 10 or newer only.</Text>
+          <Text style={styles.note}>
+            This diagnostic status targets Android 7 or newer; device compatibility remains
+            untested.
+          </Text>
         ) : (
           <>
             <View style={styles.card}>

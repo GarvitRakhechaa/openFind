@@ -4,8 +4,8 @@ import { setSessionCookie } from 'better-auth/cookies';
 import { handleOAuthUserInfo } from 'better-auth/oauth2';
 import { verifyAndConsumeMobileAttempt } from './mobile-attempt-verification';
 
-// Candidate internal integration only: never register a public endpoint until
-// rate limiting, transport, failure handling, staging tests and review are done.
+// Private issuance helper used behind the default-off mobile API. Real-device,
+// Neon concurrency, deployment and independent security review remain required.
 type EndpointContext = Parameters<typeof handleOAuthUserInfo>[0];
 type Db = Parameters<typeof verifyAndConsumeMobileAttempt>[0];
 type Input = Parameters<typeof verifyAndConsumeMobileAttempt>[1];
@@ -21,6 +21,7 @@ export async function issueMobileSessionCandidate(
   db: Db,
   input: Input,
   policy: Policy,
+  onSessionCreated?: (token: string) => void,
 ): Promise<boolean> {
   // This candidate never implicitly links an account based on email, must not
   // create an account cookie, and must use the existing Web Google client.
@@ -51,6 +52,8 @@ export async function issueMobileSessionCandidate(
   });
   if (result.error || !result.data) return false;
   try {
+    // Private request-scoped callback allows cleanup if cookie delivery fails.
+    onSessionCreated?.(result.data.session.token);
     await setSessionCookie(ctx, result.data);
   } catch (error) {
     // Best effort only: a failed database operation may leave a revocable

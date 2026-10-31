@@ -9,6 +9,17 @@
     "android": {
       "package": "org.openfind.mobile"
     },
-    "plugins": ["expo-router"]
+    "plugins": [
+      "expo-router",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "minSdkVersion": 24
+          }
+        }
+      ],
+      "expo-secure-store"
+    ]
   }
 }

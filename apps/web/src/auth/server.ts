@@ -25,7 +25,7 @@ function configuredOrigin(value: string | undefined): string | null {
   }
 }
 
-function readConfig() {
+export function readAuthConfig() {
   const baseURL = configuredOrigin(process.env.BETTER_AUTH_URL);
   const secret = process.env.BETTER_AUTH_SECRET;
   const clientId = process.env.GOOGLE_CLIENT_ID;
@@ -45,12 +45,12 @@ function readConfig() {
 }
 
 export function isAuthConfigured() {
-  return readConfig() !== null;
+  return readAuthConfig() !== null;
 }
 
 /** Returns null when deployment is unconfigured; no credentials or dev bypass are provided. */
 export function getAuth() {
-  const config = readConfig();
+  const config = readAuthConfig();
   if (!config) return null;
   return createAuth(getDb(), config);
 }

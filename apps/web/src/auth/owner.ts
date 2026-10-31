@@ -26,7 +26,7 @@ export async function resolveMappedOwner(auth: Auth, db: Database, headers: Head
   return { accountId: result.rows[0].account_id };
 }
 
-/** Server-only convenience for future route handlers; no route uses it yet. */
+/** Server-only convenience for future route handlers. */
 export async function getCurrentOwner(headers: Headers) {
   const auth = getAuth();
   if (!auth) return null;

@@ -1,4 +1,5 @@
 name: CI
+
 on:
   push:
   pull_request:
@@ -20,9 +21,13 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      # Scan the checkout before dependencies are installed; this scans the current
+      # tree, not all Git history. Update and pin the image digest before release.
       - name: Scan current files for secrets
         run: >-
-          docker run --rm -v "$PWD:/repo:ro" ghcr.io/gitleaks/gitleaks:v8.30.1
+          docker run --rm
+          -v "$PWD:/repo:ro"
+          ghcr.io/gitleaks/gitleaks:v8.30.1
           dir /repo --redact --no-banner
 
       - name: Install pnpm
@@ -40,6 +45,9 @@ jobs:
       - name: Check configuration, lint, format and types
         run: pnpm check
 
+      - name: Test Android diagnostic permission policy
+        run: pnpm --filter @openfind/mobile permissions:test
+
       - name: Validate migrations and database constraints
         run: |
           pnpm --filter @openfind/web db:check
@@ -51,6 +59,14 @@ jobs:
           pnpm --filter @openfind/web auth:attempt-verification-test
           pnpm --filter @openfind/web auth:account-issuance-test
           pnpm --filter @openfind/web auth:request-test
+          pnpm --filter @openfind/web auth:mobile-start-test
+          pnpm --filter @openfind/web auth:mobile-exchange-test
+          pnpm --filter @openfind/web auth:mobile-flow-test
+          pnpm --filter @openfind/web auth:mobile-rate-limit-test
+          pnpm --filter @openfind/web auth:mobile-controller-test
+          pnpm --filter @openfind/web auth:mobile-native-adapter-test
+          pnpm --filter @openfind/web auth:mobile-integration-test
+          pnpm --filter @openfind/web auth:mobile-backend-test
           pnpm --filter @openfind/web owner:test
           pnpm --filter @openfind/web owner:provisioning-test
           pnpm --filter @openfind/web owner:devices-test

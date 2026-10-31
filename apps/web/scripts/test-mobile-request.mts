@@ -139,4 +139,4 @@ const stalled = streamRequest(
 );
 assert.equal(await readMobileAuthBody(stalled, 'start'), null);
 assert.equal(timeoutCancelled, true, 'stalled request stream should be cancelled');
-console.log('Mobile request boundary tests passed; no HTTP endpoint was enabled.');
+console.log('Mobile request boundary tests passed; real Google login was not tested.');

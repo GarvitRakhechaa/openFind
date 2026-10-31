@@ -9,8 +9,8 @@ import {
 } from '../db/mobile-auth-attempt-queries';
 import { createMobileGoogleNonce, verifyMobileGoogleToken } from './mobile-google-verifier';
 
-// Inert building block: no route, account provisioning, session issuance, or
-// rate limiting. This proposed exchange must be reviewed before integration.
+// Used by the guarded mobile API. Attempt consumption precedes session
+// issuance; these operations are not in one transaction and require review.
 type AttemptDb = { execute: (query: SQL) => PromiseLike<{ rows: Record<string, unknown>[] }> };
 type Policy = { webClientId: string; androidClientId: string };
 const commitmentPattern = /^[0-9a-f]{64}$/;

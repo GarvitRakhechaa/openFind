@@ -1,22 +1,29 @@
-import { betterAuth } from 'better-auth';
+import { betterAuth, type BetterAuthPlugin } from 'better-auth';
 import { drizzleAdapter } from '@better-auth/drizzle-adapter';
 import * as authSchema from './schema';
 
 type AuthConfig = { baseURL: string; secret: string; clientId: string; clientSecret: string };
 
 /** Shared configuration; callers must validate origin and secrets before invoking. */
-export function createAuth(db: Parameters<typeof drizzleAdapter>[0], config: AuthConfig) {
+export function createAuth(
+  db: Parameters<typeof drizzleAdapter>[0],
+  config: AuthConfig,
+  privatePlugins: BetterAuthPlugin[] = [],
+  suppressSensitiveErrors = false,
+) {
   return betterAuth({
+    plugins: privatePlugins,
+    ...(suppressSensitiveErrors ? { logger: { disabled: true } } : {}),
     baseURL: config.baseURL,
     secret: config.secret,
     database: drizzleAdapter(db, { provider: 'pg', schema: authSchema }),
     emailAndPassword: { enabled: false },
     socialProviders: {
+      // Mobile ID-token sign-in is deliberately disabled until a reviewed,
+      // replay-resistant handoff is implemented. Web OAuth redirects remain enabled.
       google: {
         clientId: config.clientId,
         clientSecret: config.clientSecret,
-        // Mobile ID-token sign-in is deliberately disabled until a reviewed,
-        // replay-resistant handoff is implemented. Web OAuth redirects remain enabled.
         disableIdTokenSignIn: true,
       },
     },

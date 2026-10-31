@@ -7,7 +7,7 @@ export function getLabRequirements(api: number): {
   scan: LabPermission[];
   broadcast: LabPermission[];
 } {
-  if (!Number.isInteger(api) || api < 29) return { supported: false, scan: [], broadcast: [] };
+  if (!Number.isInteger(api) || api < 24) return { supported: false, scan: [], broadcast: [] };
   const location: LabPermission[] = ['coarseLocation', 'fineLocation'];
   if (api >= 31) {
     return {

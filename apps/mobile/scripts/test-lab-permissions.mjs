@@ -1,7 +1,15 @@
 import assert from 'node:assert/strict';
 import { getLabRequirements } from '../src/lab-permissions.ts';
 
-assert.deepEqual(getLabRequirements(28), { supported: false, scan: [], broadcast: [] });
+assert.deepEqual(getLabRequirements(23), { supported: false, scan: [], broadcast: [] });
+assert.deepEqual(getLabRequirements(24), {
+  supported: true,
+  scan: ['coarseLocation', 'fineLocation'],
+  broadcast: [],
+});
+assert.deepEqual(getLabRequirements(25), getLabRequirements(24));
+assert.deepEqual(getLabRequirements(26), getLabRequirements(24));
+assert.deepEqual(getLabRequirements(28), getLabRequirements(24));
 assert.deepEqual(getLabRequirements(Number.NaN), { supported: false, scan: [], broadcast: [] });
 assert.deepEqual(getLabRequirements(29), {
   supported: true,
